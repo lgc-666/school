@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="test.school.dao.StudentMapper">
+  <resultMap id="BaseResultMap" type="test.school.bean.Student">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="studentname" jdbcType="VARCHAR" property="studentname" />
+    <result column="deviceid" jdbcType="VARCHAR" property="deviceid" />
+    <result column="devicevalue" jdbcType="VARCHAR" property="devicevalue" />
+    <result column="updatetime" jdbcType="VARCHAR" property="updatetime" />
+    <result column="gentime" jdbcType="TIMESTAMP" property="gentime" />
+    <result column="ip" jdbcType="VARCHAR" property="ip" />
+    <result column="port" jdbcType="INTEGER" property="port" />
+    <result column="mac" jdbcType="VARCHAR" property="mac" />
+    <result column="teachername" jdbcType="VARCHAR" property="teachername" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, studentname, deviceid, devicevalue, updatetime, gentime, ip, port, mac, teachername
+  </sql>
+  <select id="selectByExample" parameterType="test.school.bean.StudentExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from student
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from student
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from student
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="test.school.bean.StudentExample">
+    delete from student
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="test.school.bean.Student" useGeneratedKeys="true">
+    insert into student (studentname, deviceid, devicevalue, 
+      updatetime, gentime, ip, 
+      port, mac, teachername
+      )
+    values (#{studentname,jdbcType=VARCHAR}, #{deviceid,jdbcType=VARCHAR}, #{devicevalue,jdbcType=VARCHAR}, 
+      #{updatetime,jdbcType=VARCHAR}, #{gentime,jdbcType=TIMESTAMP}, #{ip,jdbcType=VARCHAR}, 
+      #{port,jdbcType=INTEGER}, #{mac,jdbcType=VARCHAR}, #{teachername,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="test.school.bean.Student" useGeneratedKeys="true">
+    insert into student
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="studentname != null">
+        studentname,
+      </if>
+      <if test="deviceid != null">
+        deviceid,
+      </if>
+      <if test="devicevalue != null">
+        devicevalue,
+      </if>
+      <if test="updatetime != null">
+        updatetime,
+      </if>
+      <if test="gentime != null">
+        gentime,
+      </if>
+      <if test="ip != null">
+        ip,
+      </if>
+      <if test="port != null">
+        port,
+      </if>
+      <if test="mac != null">
+        mac,
+      </if>
+      <if test="teachername != null">
+        teachername,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="studentname != null">
+        #{studentname,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceid != null">
+        #{deviceid,jdbcType=VARCHAR},
+      </if>
+      <if test="devicevalue != null">
+        #{devicevalue,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="gentime != null">
+        #{gentime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ip != null">
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="port != null">
+        #{port,jdbcType=INTEGER},
+      </if>
+      <if test="mac != null">
+        #{mac,jdbcType=VARCHAR},
+      </if>
+      <if test="teachername != null">
+        #{teachername,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="test.school.bean.StudentExample" resultType="java.lang.Long">
+    select count(*) from student
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update student
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.studentname != null">
+        studentname = #{record.studentname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deviceid != null">
+        deviceid = #{record.deviceid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.devicevalue != null">
+        devicevalue = #{record.devicevalue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updatetime != null">
+        updatetime = #{record.updatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gentime != null">
+        gentime = #{record.gentime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.ip != null">
+        ip = #{record.ip,jdbcType=VARCHAR},
+      </if>
+      <if test="record.port != null">
+        port = #{record.port,jdbcType=INTEGER},
+      </if>
+      <if test="record.mac != null">
+        mac = #{record.mac,jdbcType=VARCHAR},
+      </if>
+      <if test="record.teachername != null">
+        teachername = #{record.teachername,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update student
+    set id = #{record.id,jdbcType=INTEGER},
+      studentname = #{record.studentname,jdbcType=VARCHAR},
+      deviceid = #{record.deviceid,jdbcType=VARCHAR},
+      devicevalue = #{record.devicevalue,jdbcType=VARCHAR},
+      updatetime = #{record.updatetime,jdbcType=VARCHAR},
+      gentime = #{record.gentime,jdbcType=TIMESTAMP},
+      ip = #{record.ip,jdbcType=VARCHAR},
+      port = #{record.port,jdbcType=INTEGER},
+      mac = #{record.mac,jdbcType=VARCHAR},
+      teachername = #{record.teachername,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="test.school.bean.Student">
+    update student
+    <set>
+      <if test="studentname != null">
+        studentname = #{studentname,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceid != null">
+        deviceid = #{deviceid,jdbcType=VARCHAR},
+      </if>
+      <if test="devicevalue != null">
+        devicevalue = #{devicevalue,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        updatetime = #{updatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="gentime != null">
+        gentime = #{gentime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ip != null">
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="port != null">
+        port = #{port,jdbcType=INTEGER},
+      </if>
+      <if test="mac != null">
+        mac = #{mac,jdbcType=VARCHAR},
+      </if>
+      <if test="teachername != null">
+        teachername = #{teachername,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="test.school.bean.Student">
+    update student
+    set studentname = #{studentname,jdbcType=VARCHAR},
+      deviceid = #{deviceid,jdbcType=VARCHAR},
+      devicevalue = #{devicevalue,jdbcType=VARCHAR},
+      updatetime = #{updatetime,jdbcType=VARCHAR},
+      gentime = #{gentime,jdbcType=TIMESTAMP},
+      ip = #{ip,jdbcType=VARCHAR},
+      port = #{port,jdbcType=INTEGER},
+      mac = #{mac,jdbcType=VARCHAR},
+      teachername = #{teachername,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
