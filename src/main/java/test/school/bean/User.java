@@ -1,5 +1,7 @@
 package test.school.bean;
 
+import java.util.List;
+
 public class User {
     private Integer uid;
 
@@ -8,6 +10,8 @@ public class User {
     private String password;
 
     private String salt;
+
+    private List<Role> role;
 
     public Integer getUid() {
         return uid;
@@ -39,5 +43,13 @@ public class User {
 
     public void setSalt(String salt) {
         this.salt = salt == null ? null : salt.trim();
+    }
+
+    public List<Role> getRole() {
+        return role;
+    }
+
+    public void setRole(List<Role> role) {
+        this.role = role;
     }
 }

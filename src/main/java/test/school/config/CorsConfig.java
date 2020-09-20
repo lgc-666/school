@@ -50,7 +50,7 @@ public class CorsConfig implements WebMvcConfigurer {
 public class CorsConfig {
     private CorsConfiguration buildConfig() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.addAllowedOrigin("http://localhost:8080");//支持跨域请求
+        corsConfiguration.addAllowedOrigin("http://localhost:8080");//支持来自8080的跨域请求
         corsConfiguration.addAllowedHeader("*");
         corsConfiguration.addAllowedMethod("*");
         corsConfiguration.setAllowCredentials(true); //支持cookie跨域

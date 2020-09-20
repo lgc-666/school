@@ -28,12 +28,13 @@ public class UserController {
     public Msg list() {  //所有用户
         try {
             List<User> us = userService.list();
-            Map<User, List<Role>> user_roles = new HashMap<>();
+            //Map<String, List<User>> user_roles = new HashMap<>();
             for (User user : us) {
                 List<Role> roles = roleService.listRoles(user);
-                user_roles.put(user, roles);
+                user.setRole(roles);
             }
-            return new Msg(user_roles);
+            //user_roles.put("listUser", us);
+            return new Msg(us);
         } catch (Exception e) {
             e.printStackTrace();
             return new Msg("查询失败", 401);
@@ -68,9 +69,19 @@ public class UserController {
     }
 
     @PutMapping("updateUser")
-    public Msg update(@RequestBody User user, @RequestParam("roleIds") Integer[] roleIds) { //更改用户权限(传数组)、密码
+    public Msg update(@RequestBody User user, @RequestParam("roleIds") Integer[] roleIds) { //更改用户权限(传数组)
         try {
             userRoleService.setRoles(user, roleIds);
+            return new Msg();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Msg("更改账号权限失败", 401);
+        }
+    }
+
+    @PutMapping("updatePassword")
+    public Msg updatePassword(@RequestBody User user) { //更改密码
+        try {
             String password = user.getPassword();
             // 如果在修改的时候没有设置密码，就表示不改动密码,改了密码要重新加盐生成新的加密密钥
             if (user.getPassword().length() != 0) {
@@ -87,7 +98,7 @@ public class UserController {
             return new Msg();
         } catch (Exception e) {
             e.printStackTrace();
-            return new Msg("更新指定用户信息失败", 401);
+            return new Msg("更新账号密码失败", 401);
         }
     }
 
