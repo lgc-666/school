@@ -69,8 +69,9 @@ public class UserController {
     }
 
     @PutMapping("updateUser")
-    public Msg update(@RequestBody User user, @RequestParam("roleIds") Integer[] roleIds) { //更改用户权限(传数组)
+    public Msg update(@RequestParam("uid") Integer uid, @RequestParam("roleIds") Integer[] roleIds) { //更改用户权限(传数组)
         try {
+            User user=userService.get(uid);
             userRoleService.setRoles(user, roleIds);
             return new Msg();
         } catch (Exception e) {
@@ -80,22 +81,25 @@ public class UserController {
     }
 
     @PutMapping("updatePassword")
-    public Msg updatePassword(@RequestBody User user) { //更改密码
+    public Msg updatePassword(@RequestParam("newpassword") String newpassword, @RequestParam("uid") Integer uid) { //更改密码
         try {
-            String password = user.getPassword();
+            User user=userService.get(uid);
+            System.out.println(newpassword+"----"+user.getUsername());
             // 如果在修改的时候没有设置密码，就表示不改动密码,改了密码要重新加盐生成新的加密密钥
-            if (user.getPassword().length() != 0) {
+            if (newpassword.length() != 0) {
                 String salt = new SecureRandomNumberGenerator().nextBytes().toString();
                 int times = 2;  //2次加密
                 String algorithmName = "md5";
-                String encodedPassword = new SimpleHash(algorithmName, password, salt, times).toString();
+                String encodedPassword = new SimpleHash(algorithmName, newpassword, salt, times).toString();
                 user.setSalt(salt);
                 user.setPassword(encodedPassword);
+                userService.update(user);
+                return new Msg("该账号密码已更改");
             } else {
-                user.setPassword(null); //所调用的更新方法只更新不为null的属性
+                //user.setPassword(null); //所调用的更新方法只更新不为null的属性
+                return new Msg("密码更改失败，输入密码不能为空");
             }
-            userService.update(user);
-            return new Msg();
+
         } catch (Exception e) {
             e.printStackTrace();
             return new Msg("更新账号密码失败", 401);

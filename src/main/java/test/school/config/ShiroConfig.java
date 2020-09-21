@@ -83,6 +83,7 @@ public class ShiroConfig {
         //开放其他接口(登录后可以访问)
         filterChainDefinitionMap.put("/menu","authc");
         filterChainDefinitionMap.put("/listUser","authc");
+        filterChainDefinitionMap.put("/updatePassword", "authc");
         filterChainDefinitionMap.put("/**", "url");
         shiroFilterFactoryBean.setFilters(customisedFilter);
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
