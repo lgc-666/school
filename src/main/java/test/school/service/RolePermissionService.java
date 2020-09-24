@@ -1,17 +1,32 @@
 package test.school.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import test.school.bean.Role;
 import test.school.bean.RolePermission;
 import test.school.bean.RolePermissionExample;
 import test.school.dao.RolePermissionMapper;
 
 import java.util.List;
-
+@Service
 public class RolePermissionService {
 
     @Autowired
     RolePermissionMapper rolePermissionMapper;
+
+    public void resetPermission(String status,Integer rid,Integer pid) {
+        // 删除当前角色所有的权限
+        if(status.equals("0")){
+            deleteByRolePermission(rid,pid);
+        }
+        else{
+            // 设置新的权限关系
+            RolePermission rolePermission = new RolePermission();
+            rolePermission.setPid(pid);
+            rolePermission.setRid(rid);
+            rolePermissionMapper.insert(rolePermission);
+        }
+    }
 
 
     public void setPermissions(Role role, Integer[] permissionIds) {
@@ -45,6 +60,15 @@ public class RolePermissionService {
     public void deleteByPermission(Integer permissionId) {
         RolePermissionExample example = new RolePermissionExample();
         example.createCriteria().andPidEqualTo(permissionId);
+        List<RolePermission> rps = rolePermissionMapper.selectByExample(example);
+        for (RolePermission rolePermission : rps)
+            rolePermissionMapper.deleteByPrimaryKey(rolePermission.getId());
+    }
+
+    public void deleteByRolePermission(Integer rid,Integer uid) {
+        RolePermissionExample example = new RolePermissionExample();
+        example.createCriteria().andPidEqualTo(uid);
+        example.createCriteria().andPidEqualTo(rid);
         List<RolePermission> rps = rolePermissionMapper.selectByExample(example);
         for (RolePermission rolePermission : rps)
             rolePermissionMapper.deleteByPrimaryKey(rolePermission.getId());

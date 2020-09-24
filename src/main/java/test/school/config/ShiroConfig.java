@@ -84,6 +84,11 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/menu","authc");
         filterChainDefinitionMap.put("/listUser","authc");
         filterChainDefinitionMap.put("/updatePassword", "authc");
+        filterChainDefinitionMap.put("/updateUser", "authc");
+        filterChainDefinitionMap.put("/listRole", "authc");
+        filterChainDefinitionMap.put("/editRole", "authc");
+        filterChainDefinitionMap.put("/updateRolePermission", "authc");
+        filterChainDefinitionMap.put("/listregisterApproval", "authc");
         filterChainDefinitionMap.put("/**", "url");
         shiroFilterFactoryBean.setFilters(customisedFilter);
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);

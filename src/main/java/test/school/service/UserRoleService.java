@@ -27,9 +27,11 @@ public class UserRoleService {
         if (null != roleIds)
             for (Integer rid : roleIds){
                 UserRole userRole = new UserRole();
-                userRole.setRid(rid);
-                userRole.setUid(user.getUid());
-                userRoleMapper.insert(userRole);
+                if(rid!=0){
+                    userRole.setRid(rid);
+                    userRole.setUid(user.getUid());
+                    userRoleMapper.insert(userRole);
+                }
             }
     }
 

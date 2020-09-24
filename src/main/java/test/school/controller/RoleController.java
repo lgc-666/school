@@ -9,10 +9,11 @@ import test.school.service.PermissionService;
 import test.school.service.RolePermissionService;
 import test.school.service.RoleService;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+@RestController
 public class RoleController {
     @Autowired
     RoleService roleService;
@@ -21,8 +22,19 @@ public class RoleController {
     @Autowired
     PermissionService permissionService;
 
-    @GetMapping("listRole")
+    @GetMapping("/listRole")
     public Msg list() {
+        try {
+            List<Role> rs = roleService.list();
+            return new Msg(rs);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Msg("查询失败", 401);
+        }
+    }
+
+    @GetMapping("/listRolePermission")
+    public Msg listRolePermission() {
         try {
             List<Role> rs = roleService.list();
             Map<Role, List<Permission>> role_permissions = new HashMap<>();
@@ -38,15 +50,17 @@ public class RoleController {
         }
     }
 
-    @GetMapping("editRole")
-    public Msg list(@RequestParam("rid") Integer rid) {
+    @GetMapping("/editRole")
+    public Msg editRole(@RequestParam("rid") Integer rid) {
         try {
+            List<Map> resMap = new ArrayList<Map>();
             Map<String, List<Permission>> permission_list = new HashMap<>();
             Role role = roleService.get(rid);
             List<Permission> ps = permissionService.list();
             List<Permission> currentPermissions = permissionService.list(role);
-            permission_list.put("all_permission", ps);   //全部权限（用于展示）
+            permission_list.put("all_permission", ps);   //全部权限（用于展示）---->拆开
             permission_list.put("role_permission", currentPermissions);  //该角色的权限（用于默认选中）
+            //resMap.add(permission_list);
             return new Msg(permission_list);
         } catch (Exception e) {
             e.printStackTrace();

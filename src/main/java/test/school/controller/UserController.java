@@ -24,7 +24,7 @@ public class UserController {
     @Autowired
     RoleService roleService;
 
-    @GetMapping("listUser")
+    @GetMapping("/listUser")
     public Msg list() {  //所有用户
         try {
             List<User> us = userService.list();
@@ -41,7 +41,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("editUser")
+    @GetMapping("/editUser")
     public Msg edit(@RequestParam("uid") Integer uid) {  //指定其中一个用户
         try {
             Map<String, List<Role>> role_list = new HashMap<>();
@@ -57,7 +57,7 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("deleteUser")
+    @DeleteMapping("/deleteUser")
     public Msg delete(@RequestParam("uid") Integer uid) {
         try {
             userService.delete(uid);
@@ -68,19 +68,19 @@ public class UserController {
         }
     }
 
-    @PutMapping("updateUser")
+    @PutMapping("/updateUser")
     public Msg update(@RequestParam("uid") Integer uid, @RequestParam("roleIds") Integer[] roleIds) { //更改用户权限(传数组)
         try {
             User user=userService.get(uid);
             userRoleService.setRoles(user, roleIds);
-            return new Msg();
+            return new Msg("更改账号权限成功");
         } catch (Exception e) {
             e.printStackTrace();
             return new Msg("更改账号权限失败", 401);
         }
     }
 
-    @PutMapping("updatePassword")
+    @PutMapping("/updatePassword")
     public Msg updatePassword(@RequestParam("newpassword") String newpassword, @RequestParam("uid") Integer uid) { //更改密码
         try {
             User user=userService.get(uid);
@@ -106,7 +106,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("addUser")
+    @PostMapping("/addUser")
     public Msg add(@RequestParam("username") String username, @RequestParam("password") String password) {
         try {
             String salt = new SecureRandomNumberGenerator().nextBytes().toString();

@@ -49,7 +49,7 @@ public class UserService {
 
     public List<User> list() {
         UserExample example = new UserExample();
-        example.setOrderByClause("id desc");
+        example.setOrderByClause("uid desc");
         return userMapper.selectByExample(example);
 
     }

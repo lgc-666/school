@@ -5,12 +5,15 @@ import org.springframework.web.bind.annotation.*;
 import test.school.bean.Msg;
 import test.school.bean.Permission;
 import test.school.service.PermissionService;
+import test.school.service.RolePermissionService;
 
 import java.util.List;
-
+@RestController
 public class PermissionController {
     @Autowired
     PermissionService permissionService;
+    @Autowired
+    RolePermissionService rolePermissionService;
 
     @GetMapping("listPermission")
     public Msg list() {
@@ -23,7 +26,7 @@ public class PermissionController {
         }
     }
 
-    @GetMapping("editPermission")
+    @GetMapping("/editPermission")
     public Msg list(@RequestParam("pid") Integer pid) {
         try {
             Permission permission = permissionService.get(pid);
@@ -50,6 +53,17 @@ public class PermissionController {
         try {
             permissionService.update(permission);
             return new Msg();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Msg("更新指定权限失败", 401);
+        }
+    }
+
+    @PutMapping("/updateRolePermission")
+    public Msg updateRolePermission(@RequestParam("status") String status,@RequestParam("rid") Integer rid,@RequestParam("pid") Integer pid) {
+        try {
+            rolePermissionService.resetPermission(status,rid,pid);
+            return new Msg("更新指定权限成功");
         } catch (Exception e) {
             e.printStackTrace();
             return new Msg("更新指定权限失败", 401);

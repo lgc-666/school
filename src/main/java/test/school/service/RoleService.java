@@ -40,7 +40,7 @@ public class RoleService {
 
     public List<Role> list() {
         RoleExample example = new RoleExample();
-        example.setOrderByClause("id desc");
+        example.setOrderByClause("rid desc");
         return roleMapper.selectByExample(example);
 
     }
